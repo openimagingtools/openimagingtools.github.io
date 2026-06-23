@@ -534,6 +534,12 @@ a.pill {
   border-color: #aaaaaa;
 }
 
+#form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .field-note {
   margin-top: 6px;
   font-size: 12px;
