@@ -1,0 +1,65 @@
+---
+layout: default
+title: Suggest a Tool — Open Imaging Tools
+permalink: /contribute/
+---
+
+<div class="about-wrap">
+  <header>
+    <div class="site-header-row">
+      <div class="site-header-left">
+        <a href="{{ '/' | relative_url }}" class="back-link">← All modalities</a>
+        <h1 class="site-title">Suggest a tool</h1>
+      </div>
+      <nav class="site-nav">
+        <a href="{{ '/about/' | relative_url }}">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="about-body">
+    <p>Submissions become a public GitHub Issue and are reviewed before being added. Takes about 30 seconds.</p>
+
+    <form class="suggest-form" action="https://formsubmit.co/henrikformoe@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="[openimagingtools] New tool suggestion">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://openimagingtools.com/contribute/thanks">
+
+      <div class="field">
+        <label>Modality</label>
+        <select name="modality" required>
+          <option value="" disabled selected>Select modality</option>
+          <option value="EEG">EEG</option>
+          <option value="MEG">MEG</option>
+          <option value="PET">PET</option>
+          <option value="fNIRS">fNIRS</option>
+          <option value="Ultrasound">Ultrasound</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Tool name</label>
+        <input type="text" name="tool_name" required placeholder="e.g. MNE-Python">
+      </div>
+
+      <div class="field">
+        <label>URL</label>
+        <input type="url" name="url" required placeholder="https://github.com/...">
+      </div>
+
+      <div class="field">
+        <label>Description <span style="font-weight:400;text-transform:none;letter-spacing:0">(one sentence)</span></label>
+        <textarea name="description" rows="2" placeholder="What does it do?"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Your name or contact <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="text" name="contact" placeholder="Optional">
+      </div>
+
+      <button class="submit-btn" type="submit">Submit</button>
+    </form>
+  </div>
+</div>
