@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Open Imaging Tools
+description: A community directory of open-source software across neuroimaging modalities.
 ---
 
 <header>
@@ -17,102 +18,507 @@ title: Open Imaging Tools
 </header>
 
 <div class="controls">
-  <div class="pills">
+  <div class="modality-pills" id="modality-pills">
+    <a class="pill modality-link" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI ↗</a>
+    <button class="pill" data-modality="EEG">EEG</button>
+    <button class="pill" data-modality="MEG">MEG</button>
+    <button class="pill" data-modality="PET">PET</button>
+    <button class="pill" data-modality="fNIRS">fNIRS</button>
+    <button class="pill" data-modality="Ultrasound">Ultrasound</button>
+  </div>
+  <div class="pills" id="pills">
     <div class="pill-group">
-      <a class="pill selected" href="{{ '/' | relative_url }}">All</a>
-      <a class="pill" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI</a>
-      <a class="pill" href="{{ '/eeg/' | relative_url }}">EEG</a>
-      <a class="pill" href="{{ '/meg/' | relative_url }}">MEG</a>
-      <a class="pill" href="{{ '/pet/' | relative_url }}">PET</a>
-      <a class="pill" href="{{ '/nirs/' | relative_url }}">fNIRS</a>
-      <a class="pill disabled">Ultrasound</a>
+      <button class="pill selected" data-filter="all">All</button>
+      <button class="pill" data-filter="new">Recently added</button>
+    </div>
+    <div class="pill-group">
+      <button class="pill" data-filter="prepare">Prepare</button>
+      <button class="pill" data-filter="analyze">Analyze</button>
+      <button class="pill" data-filter="visualize">Visualize</button>
+      <button class="pill" data-filter="infrastructure">Infrastructure</button>
+    </div>
+    <div class="pill-group">
+      <button class="pill" data-filter="resources">Resources & Data</button>
     </div>
   </div>
-  <input class="search" id="search" type="search" placeholder="Search modalities…" autocomplete="off" spellcheck="false">
+  <div class="sub-pills" id="sub-pills"></div>
+  <input class="search" id="search" type="search" placeholder="Search tools…" autocomplete="off">
+  <div class="mobile-modality" id="mobile-modality">
+    <button class="pill selected" data-modality="">All</button>
+    <button class="pill" data-modality="EEG">EEG</button>
+    <button class="pill" data-modality="MEG">MEG</button>
+    <button class="pill" data-modality="PET">PET</button>
+    <button class="pill" data-modality="fNIRS">fNIRS</button>
+    <button class="pill" data-modality="Ultrasound">Ultrasound</button>
+  </div>
 </div>
 
 <div class="meta">
   <div class="meta-left">
-    <span id="count">6 modalities</span>
+    <span id="tool-count">
+      {%- assign total = 0 -%}
+      {%- for cat in site.data.categories -%}
+        {%- assign tools = site.data.tools[cat.id] -%}
+        {%- if tools -%}{%- assign total = total | plus: tools.size -%}{%- endif -%}
+      {%- endfor -%}
+      {{ total }} tools
+    </span>
+    <span id="lang-tag" class="hidden">(lang: <span id="lang-tag-name"></span> <button id="lang-clear" class="lang-clear">✕</button>)</span>
+    <span id="modality-tag" class="hidden">(modality: <span id="modality-tag-name"></span> <button id="modality-clear" class="lang-clear">✕</button>)</span>
     <span class="meta-sep">·</span>
+    <span class="legend-item"><span class="dot dot-active"></span> Active</span>
+    <span class="legend-item"><span class="dot dot-quiet"></span> Quiet</span>
+    <span class="legend-item"><span class="dot dot-inactive"></span> Inactive</span>
+    <span class="legend-item"><span class="dot dot-external"></span> Not on GitHub</span>
+  </div>
+  <div class="meta-right">
     <span>Updated weekly via GitHub API</span>
     <span class="meta-sep">·</span>
     <a class="meta-link" href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
   </div>
 </div>
 
-<table class="tool-table" id="modality-table">
+<table class="tool-table" aria-label="Open Imaging Tools directory">
   <thead>
     <tr>
-      <th>Modality</th>
+      <th aria-label="Health"></th>
+      <th>Tool</th>
       <th>Description</th>
-      <th>Tools</th>
-      <th>Status</th>
+      <th class="col-date">Added</th>
+      <th class="lang-th">
+        <button class="lang-header-btn" id="lang-header-btn">
+          <span id="lang-header-label">Language</span> ▾
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          <button class="lang-option selected" data-lang="">All</button>
+          {%- assign all_langs = '' | split: '' -%}
+          {%- for cat in site.data.categories -%}
+            {%- assign cat_tools = site.data.tools[cat.id] -%}
+            {%- for tool in cat_tools -%}
+              {%- if tool.language -%}
+                {%- unless all_langs contains tool.language -%}
+                  {%- assign all_langs = all_langs | push: tool.language -%}
+                {%- endunless -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          {%- assign sorted_langs = all_langs | sort -%}
+          {%- for lang in sorted_langs -%}
+          <button class="lang-option" data-lang="{{ lang }}">{{ lang }}</button>
+          {%- endfor -%}
+        </div>
+      </th>
+      <th class="modality-th">
+        <button class="modality-header-btn" id="modality-header-btn">
+          <span id="modality-header-label">Modality</span> ▾
+        </button>
+        <div class="modality-dropdown" id="modality-dropdown">
+          <button class="modality-option selected" data-modality="">All</button>
+          <button class="modality-option" data-modality="EEG">EEG</button>
+          <button class="modality-option" data-modality="MEG">MEG</button>
+          <button class="modality-option" data-modality="PET">PET</button>
+          <button class="modality-option" data-modality="fNIRS">fNIRS</button>
+          <button class="modality-option" data-modality="Ultrasound">Ultrasound</button>
+        </div>
+      </th>
+      <th class="stars-th">
+        <button class="stars-header-btn" id="stars-header-btn">
+          <span id="stars-header-label">Stars</span> <span id="stars-sort-icon">▾</span>
+        </button>
+        <div class="stars-dropdown" id="stars-dropdown">
+          <button class="stars-option selected" data-sort="">Default</button>
+          <button class="stars-option" data-sort="desc">Most first</button>
+          <button class="stars-option" data-sort="asc">Fewest first</button>
+        </div>
+      </th>
     </tr>
   </thead>
-  <tbody>
-    <tr data-name="mri">
-      <td class="tool-name"><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI</a></td>
-      <td class="tool-desc">Structural, functional, diffusion, and quantitative MRI analysis.</td>
-      <td class="tool-count active-link"><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">178+ →</a></td>
-      <td class="tool-status">openmritools.com</td>
-    </tr>
-    <tr data-name="eeg electroencephalography">
-      <td class="tool-name"><a href="{{ '/eeg/' | relative_url }}">EEG</a></td>
-      <td class="tool-desc">Scalp electrical recordings of brain activity.</td>
-      <td class="tool-count">—</td>
-      <td class="tool-status">Accepting contributions</td>
-    </tr>
-    <tr data-name="meg magnetoencephalography">
-      <td class="tool-name"><a href="{{ '/meg/' | relative_url }}">MEG</a></td>
-      <td class="tool-desc">Magnetic field recordings from neural currents.</td>
-      <td class="tool-count">—</td>
-      <td class="tool-status">Accepting contributions</td>
-    </tr>
-    <tr data-name="pet positron emission tomography">
-      <td class="tool-name"><a href="{{ '/pet/' | relative_url }}">PET</a></td>
-      <td class="tool-desc">Tracer-based metabolic and receptor imaging.</td>
-      <td class="tool-count">—</td>
-      <td class="tool-status">Accepting contributions</td>
-    </tr>
-    <tr data-name="fnirs nirs near-infrared spectroscopy optical">
-      <td class="tool-name"><a href="{{ '/nirs/' | relative_url }}">fNIRS</a></td>
-      <td class="tool-desc">Optical hemodynamic imaging.</td>
-      <td class="tool-count">—</td>
-      <td class="tool-status">Accepting contributions</td>
-    </tr>
-    <tr class="inactive" data-name="ultrasound functional ultrasound">
-      <td class="tool-name">Ultrasound</td>
-      <td class="tool-desc">Functional and structural ultrasound neuroimaging.</td>
-      <td class="tool-count">—</td>
-      <td class="tool-status">Coming soon</td>
-    </tr>
+  <tbody id="tool-list">
+    {% for cat in site.data.categories %}
+      {% assign tools = site.data.tools[cat.id] %}
+      {% if tools %}
+        <tr class="section-header" data-category="{{ cat.id }}">
+          <td colspan="7">{{ cat.name }}</td>
+        </tr>
+        {% for tool in tools %}
+          {% if tool.github %}
+            {% assign hkey = tool.github | replace: '/', '-' %}
+            {% assign health = site.data.health[hkey] %}
+            {% assign status = health.status | default: 'unknown' %}
+            {% if status == 'active' or status == 'maintained' %}
+              {% assign dot = 'dot-active' %}
+              {% assign row_class = '' %}
+            {% elsif status == 'quiet' %}
+              {% assign dot = 'dot-quiet' %}
+              {% assign row_class = '' %}
+            {% elsif status == 'inactive' %}
+              {% assign dot = 'dot-inactive' %}
+              {% assign row_class = 'inactive' %}
+            {% else %}
+              {% assign dot = 'dot-unknown' %}
+              {% assign row_class = '' %}
+            {% endif %}
+          {% else %}
+            {% assign dot = 'dot-external' %}
+            {% assign row_class = '' %}
+            {% assign status = 'external' %}
+            {% assign health = nil %}
+          {% endif %}
+          <tr class="{{ row_class }}"
+              data-category="{{ cat.id }}"
+              data-name="{{ tool.name | downcase }}"
+              data-desc="{{ tool.description | downcase }}"
+              data-added="{{ tool.date_added }}"
+              data-lang="{{ tool.language }}"
+              data-modality="{{ tool.modality }}"
+              {% unless tool.github %}data-external="true"{% endunless %}
+              {% if health.stars %}data-stars="{{ health.stars }}"{% endif %}>
+            <td><span class="dot {{ dot }}" title="{{ status }}"></span></td>
+            <td class="tool-name">
+              <a href="{{ tool.url }}" target="_blank" rel="noopener noreferrer">{{ tool.name }}</a>
+            </td>
+            <td class="tool-desc">{{ tool.description }}</td>
+            <td class="col-date" data-date="{{ tool.date_added }}"></td>
+            <td class="tool-lang">{{ tool.language }}</td>
+            <td class="tool-modality">{{ tool.modality }}</td>
+            <td class="tool-stars"{% if health.stars %} data-stars="{{ health.stars }}"{% endif %}></td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   </tbody>
 </table>
 
-<footer class="footer">
-  <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
-</footer>
-
 <script>
-  const search = document.getElementById('search');
-  const rows = document.querySelectorAll('#modality-table tbody tr');
-  const countEl = document.getElementById('count');
+  const groups = {
+    all:            null,
+    prepare:        ['data_conversion', 'qc', 'preprocessing', 'registration_normalization'],
+    analyze:        ['statistical_analysis', 'connectivity'],
+    visualize:      ['visualization', 'libraries'],
+    infrastructure: ['workflow_managers'],
+    resources:      ['datasets', 'consortia', 'standards_protocols', 'preregistration', 'community', 'training_events']
+  };
 
-  search.addEventListener('input', () => {
-    const q = search.value.toLowerCase().trim();
-    let visible = 0;
-    rows.forEach(row => {
-      const name = (row.dataset.name || '').toLowerCase();
-      const desc = (row.querySelector('.tool-desc') || {}).textContent.toLowerCase();
-      const match = !q || name.includes(q) || desc.includes(q);
-      row.classList.toggle('hidden', !match);
-      if (match) visible++;
-    });
-    countEl.textContent = q ? `${visible} modalit${visible === 1 ? 'y' : 'ies'}` : '6 modalities';
+  const toolTable = document.querySelector('.tool-table');
+
+  document.querySelectorAll('.col-date[data-date]').forEach(cell => {
+    const d = new Date(cell.dataset.date);
+    if (!isNaN(d)) {
+      cell.textContent = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
   });
+
+  document.querySelectorAll('.tool-stars[data-stars]').forEach(cell => {
+    const n = parseInt(cell.dataset.stars);
+    if (!isNaN(n) && n > 0) {
+      cell.textContent = n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : n;
+    }
+  });
+
+  const categoryNames = {
+    {% for cat in site.data.categories %}'{{ cat.id }}': '{{ cat.name }}',
+    {% endfor %}
+  };
+
+  const mainPills        = document.querySelectorAll('#pills .pill');
+  const subPillsEl       = document.getElementById('sub-pills');
+  const search           = document.getElementById('search');
+  const tbody            = document.getElementById('tool-list');
+  const toolRows         = document.querySelectorAll('#tool-list tr:not(.section-header)');
+  const headers          = document.querySelectorAll('#tool-list tr.section-header');
+  const originalOrder    = [...tbody.children];
+  const countEl          = document.getElementById('tool-count');
+  const langTagEl        = document.getElementById('lang-tag');
+  const langTagName      = document.getElementById('lang-tag-name');
+  const langClearEl      = document.getElementById('lang-clear');
+  const langHeaderBtn    = document.getElementById('lang-header-btn');
+  const langHeaderLabel  = document.getElementById('lang-header-label');
+  const langDropdown     = document.getElementById('lang-dropdown');
+  const langOptions      = langDropdown.querySelectorAll('.lang-option');
+
+  const modalityTagEl       = document.getElementById('modality-tag');
+  const modalityTagName     = document.getElementById('modality-tag-name');
+  const modalityClearEl     = document.getElementById('modality-clear');
+  const modalityHeaderBtn   = document.getElementById('modality-header-btn');
+  const modalityHeaderLabel = document.getElementById('modality-header-label');
+  const modalityDropdown    = document.getElementById('modality-dropdown');
+  const modalityOptions     = modalityDropdown.querySelectorAll('.modality-option');
+  const mobileModalityBtns  = document.querySelectorAll('#mobile-modality .pill');
+  const imgModalityBtns     = document.querySelectorAll('#modality-pills button');
+
+  const modalityLabels = { EEG: 'EEG', MEG: 'MEG', PET: 'PET', fNIRS: 'fNIRS', Ultrasound: 'Ultrasound' };
+
+  let activeFilter    = 'all';
+  let activeSubFilter = null;
+  let activeLang      = null;
+  let activeModality  = null;
+  let starsSortDir    = null;
+
+  const starsHeaderBtn = document.getElementById('stars-header-btn');
+  const starsSortIcon  = document.getElementById('stars-sort-icon');
+  const starsDropdown  = document.getElementById('stars-dropdown');
+  const starsOptions   = starsDropdown.querySelectorAll('.stars-option');
+
+  function setStarsSort(dir) {
+    starsSortDir = dir || null;
+    starsSortIcon.textContent = starsSortDir === 'desc' ? '↓' : starsSortDir === 'asc' ? '↑' : '▾';
+    starsHeaderBtn.classList.toggle('stars-header-active', !!starsSortDir);
+    starsOptions.forEach(o => o.classList.toggle('selected', o.dataset.sort === (starsSortDir || '')));
+    applyFilters();
+  }
+
+  starsHeaderBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    langDropdown.classList.remove('open');
+    modalityDropdown.classList.remove('open');
+    starsDropdown.classList.toggle('open');
+  });
+
+  starsOptions.forEach(opt => {
+    opt.addEventListener('click', e => {
+      e.stopPropagation();
+      setStarsSort(opt.dataset.sort);
+      starsDropdown.classList.remove('open');
+    });
+  });
+
+  function setLang(lang) {
+    activeLang = lang || null;
+    langHeaderLabel.textContent = activeLang ? 'Language: ' + activeLang : 'Language';
+    langHeaderBtn.classList.toggle('lang-header-active', !!activeLang);
+    langOptions.forEach(o => o.classList.toggle('selected', o.dataset.lang === (activeLang || '')));
+    if (activeLang) {
+      langTagName.textContent = activeLang;
+      langTagEl.classList.remove('hidden');
+    } else {
+      langTagEl.classList.add('hidden');
+    }
+    applyFilters();
+  }
+
+  function setModality(mod) {
+    activeModality = mod || null;
+    const label = activeModality ? (modalityLabels[activeModality] || activeModality) : null;
+    modalityHeaderLabel.textContent = label ? 'Modality: ' + label : 'Modality';
+    modalityHeaderBtn.classList.toggle('modality-header-active', !!activeModality);
+    modalityOptions.forEach(o => o.classList.toggle('selected', o.dataset.modality === (activeModality || '')));
+    mobileModalityBtns.forEach(b => b.classList.toggle('selected', b.dataset.modality === (activeModality || '')));
+    imgModalityBtns.forEach(b => b.classList.toggle('selected', b.dataset.modality === (activeModality || '')));
+    if (activeModality) {
+      modalityTagName.textContent = label;
+      modalityTagEl.classList.remove('hidden');
+    } else {
+      modalityTagEl.classList.add('hidden');
+    }
+    applyFilters();
+  }
+
+  langHeaderBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    modalityDropdown.classList.remove('open');
+    starsDropdown.classList.remove('open');
+    langDropdown.classList.toggle('open');
+  });
+
+  langOptions.forEach(opt => {
+    opt.addEventListener('click', e => {
+      e.stopPropagation();
+      setLang(opt.dataset.lang);
+      langDropdown.classList.remove('open');
+    });
+  });
+
+  modalityHeaderBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    langDropdown.classList.remove('open');
+    starsDropdown.classList.remove('open');
+    modalityDropdown.classList.toggle('open');
+  });
+
+  modalityOptions.forEach(opt => {
+    opt.addEventListener('click', e => {
+      e.stopPropagation();
+      setModality(opt.dataset.modality);
+      modalityDropdown.classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', () => {
+    langDropdown.classList.remove('open');
+    modalityDropdown.classList.remove('open');
+    starsDropdown.classList.remove('open');
+  });
+
+  function updateURL() {
+    const params = new URLSearchParams();
+    if (activeFilter && activeFilter !== 'all') params.set('filter', activeFilter);
+    if (activeSubFilter) params.set('cat', activeSubFilter);
+    if (activeModality) params.set('modality', activeModality);
+    if (activeLang) params.set('lang', activeLang);
+    if (starsSortDir) params.set('sort', starsSortDir);
+    const q = search.value.trim();
+    if (q) params.set('q', q);
+    const str = params.toString();
+    history.replaceState(null, '', str ? '?' + str : window.location.pathname);
+  }
+
+  function applyFilters() {
+    const q         = search.value.toLowerCase().trim();
+    const isNewView = activeFilter === 'new';
+    const groupCats = isNewView ? null : groups[activeFilter];
+    const allowed   = activeSubFilter ? [activeSubFilter] : groupCats;
+
+    toolTable.classList.toggle('show-dates', isNewView);
+
+    let top10 = null;
+    if (isNewView) {
+      const sorted = [...toolRows]
+        .filter(r => r.dataset.added)
+        .sort((a, b) => new Date(b.dataset.added) - new Date(a.dataset.added))
+        .slice(0, 25);
+      top10 = new Set(sorted);
+
+      const seenCats = new Set();
+      for (const row of sorted) {
+        const cat = row.dataset.category;
+        if (!seenCats.has(cat)) {
+          const header = [...headers].find(h => h.dataset.category === cat);
+          if (header) tbody.appendChild(header);
+          seenCats.add(cat);
+        }
+        tbody.appendChild(row);
+      }
+    } else {
+      for (const el of originalOrder) {
+        if (el.classList.contains('section-header')) {
+          const cat = el.dataset.category;
+          tbody.appendChild(el);
+          const catRows = originalOrder.filter(r =>
+            !r.classList.contains('section-header') && r.dataset.category === cat
+          );
+          catRows.filter(r => r.dataset.external === 'true').forEach(r => tbody.appendChild(r));
+          catRows.filter(r => r.dataset.external !== 'true').forEach(r => tbody.appendChild(r));
+        }
+      }
+    }
+
+    let visible = 0;
+    toolRows.forEach(row => {
+      const catMatch      = isNewView ? top10.has(row) : (!allowed || allowed.includes(row.dataset.category));
+      const textMatch     = !q || row.dataset.name.includes(q) || row.dataset.desc.includes(q);
+      const langMatch     = !activeLang || row.dataset.lang === activeLang;
+      const modalityMatch = !activeModality || row.dataset.modality === activeModality;
+      const show = catMatch && textMatch && langMatch && modalityMatch;
+      row.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+
+    headers.forEach(header => {
+      const cat = header.dataset.category;
+      const catAllowed = isNewView ? [...top10].some(r => r.dataset.category === cat)
+                                   : (!allowed || allowed.includes(cat));
+      const hasVisible = catAllowed && [...toolRows].some(
+        r => r.dataset.category === cat && !r.classList.contains('hidden')
+      );
+      header.classList.toggle('hidden', !hasVisible);
+    });
+
+    countEl.textContent = visible + ' tool' + (visible === 1 ? '' : 's');
+    updateURL();
+
+    if (starsSortDir) {
+      const visibleRows = [...toolRows].filter(r => !r.classList.contains('hidden'));
+      const withGithub  = visibleRows.filter(r => r.dataset.external !== 'true');
+      const noGithub    = visibleRows.filter(r => r.dataset.external === 'true');
+      withGithub.sort((a, b) => {
+        const sa = parseInt(a.dataset.stars) || 0;
+        const sb = parseInt(b.dataset.stars) || 0;
+        return starsSortDir === 'desc' ? sb - sa : sa - sb;
+      });
+      const seenCats = new Set();
+      for (const row of [...withGithub, ...noGithub]) {
+        const cat = row.dataset.category;
+        if (!seenCats.has(cat)) {
+          const header = [...headers].find(h => h.dataset.category === cat);
+          if (header) { header.classList.remove('hidden'); tbody.appendChild(header); }
+          seenCats.add(cat);
+        }
+        tbody.appendChild(row);
+      }
+    }
+  }
+
+  function showSubPills(filter) {
+    const cats = groups[filter];
+    if (!cats || cats.length <= 1) {
+      subPillsEl.innerHTML = '';
+      subPillsEl.classList.remove('visible');
+      return;
+    }
+
+    subPillsEl.innerHTML = cats.map(id =>
+      `<button class="pill sub-pill" data-cat="${id}">${categoryNames[id] || id}</button>`
+    ).join('');
+
+    subPillsEl.querySelectorAll('.sub-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        subPillsEl.querySelectorAll('.sub-pill').forEach(p => p.classList.remove('selected'));
+        pill.classList.add('selected');
+        activeSubFilter = pill.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    subPillsEl.classList.add('visible');
+  }
+
+  mainPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      mainPills.forEach(p => p.classList.remove('selected'));
+      pill.classList.add('selected');
+      activeFilter    = pill.dataset.filter;
+      activeSubFilter = null;
+      showSubPills(activeFilter);
+      applyFilters();
+    });
+  });
+
+  langClearEl.addEventListener('click', () => setLang(null));
+  modalityClearEl.addEventListener('click', () => setModality(null));
+  mobileModalityBtns.forEach(btn => btn.addEventListener('click', () => setModality(btn.dataset.modality)));
+  imgModalityBtns.forEach(btn => btn.addEventListener('click', () => setModality(btn.dataset.modality)));
+  search.addEventListener('input', applyFilters);
+
+  (function() {
+    const p = new URLSearchParams(window.location.search);
+    const initFilter = p.get('filter');
+    const initCat = p.get('cat');
+    if (initFilter) {
+      const pill = [...mainPills].find(pl => pl.dataset.filter === initFilter);
+      if (pill) {
+        mainPills.forEach(pl => pl.classList.remove('selected'));
+        pill.classList.add('selected');
+        activeFilter = initFilter;
+        showSubPills(activeFilter);
+      }
+    }
+    if (initCat) {
+      activeSubFilter = initCat;
+      const sub = subPillsEl.querySelector(`[data-cat="${initCat}"]`);
+      if (sub) { subPillsEl.querySelectorAll('.sub-pill').forEach(s => s.classList.remove('selected')); sub.classList.add('selected'); }
+    }
+    if (p.get('modality')) setModality(p.get('modality'));
+    if (p.get('lang')) setLang(p.get('lang'));
+    if (p.get('sort')) setStarsSort(p.get('sort'));
+    if (p.get('q')) { search.value = p.get('q'); }
+    if (p.toString()) applyFilters();
+  })();
 
   document.addEventListener('keydown', e => {
     if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search.focus(); }
   });
 </script>
+
+<footer class="footer">
+  <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
+</footer>

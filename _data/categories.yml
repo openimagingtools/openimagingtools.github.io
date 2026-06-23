@@ -1,0 +1,47 @@
+- id: data_conversion
+  name: Data Conversion
+
+- id: qc
+  name: Quality Control
+
+- id: preprocessing
+  name: Preprocessing
+
+- id: registration_normalization
+  name: Registration & Normalization
+
+- id: harmonization
+  name: Harmonization
+
+- id: statistical_analysis
+  name: Statistical Analysis
+
+- id: connectivity
+  name: Connectivity
+
+- id: visualization
+  name: Visualization
+
+- id: workflow_managers
+  name: Workflow Managers
+
+- id: libraries
+  name: Libraries
+
+- id: datasets
+  name: Datasets
+
+- id: consortia
+  name: Consortia
+
+- id: standards_protocols
+  name: Standards & Protocols
+
+- id: preregistration
+  name: Preregistration & Publishing
+
+- id: community
+  name: Community
+
+- id: training_events
+  name: Events
