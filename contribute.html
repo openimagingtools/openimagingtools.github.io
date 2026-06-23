@@ -4,41 +4,42 @@ title: Suggest a Tool — Open Imaging Tools
 permalink: /contribute/
 ---
 
-<div class="about-wrap">
-  <header>
-    <div class="site-header-row">
-      <div class="site-header-left">
-        <a href="{{ '/' | relative_url }}" class="back-link">← All modalities</a>
-        <h1 class="site-title">Suggest a tool</h1>
-      </div>
-      <nav class="site-nav">
-        <a href="{{ '/about/' | relative_url }}">About</a>
-      </nav>
+<header>
+  <div class="site-header-row">
+    <div class="site-header-left">
+      <a href="{{ '/' | relative_url }}" class="back-link">← Open Imaging Tools</a>
+      <h1 class="site-title">Suggest a tool</h1>
     </div>
-  </header>
+    <nav class="site-nav">
+      <a href="{{ '/about/' | relative_url }}">About</a>
+    </nav>
+  </div>
+</header>
 
-  <div class="about-body">
-    <p>Submissions become a public GitHub Issue and are reviewed before being added. Takes about 30 seconds.</p>
+<div class="about-body">
+  <p>Submissions become a public GitHub Issue and are reviewed before being added. Takes about 30 seconds.</p>
 
-    <form class="suggest-form" action="https://formsubmit.co/henrikformoe@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="[openimagingtools] New tool suggestion">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_next" value="https://openimagingtools.com/contribute/thanks">
+  <form class="suggest-form" action="https://formsubmit.co/henrikformoe@gmail.com" method="POST">
+    <input type="hidden" name="_subject" value="[openimagingtools] New tool suggestion">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
 
-      <div class="field">
-        <label>Modality</label>
-        <select name="modality" required>
-          <option value="" disabled selected>Select modality</option>
-          <option value="EEG">EEG</option>
-          <option value="MEG">MEG</option>
-          <option value="PET">PET</option>
-          <option value="fNIRS">fNIRS</option>
-          <option value="Ultrasound">Ultrasound</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
+    <div class="field">
+      <label>Modality</label>
+      <select name="modality" id="modality-select" required>
+        <option value="" disabled selected>Select modality</option>
+        <option value="MRI">MRI</option>
+        <option value="EEG">EEG</option>
+        <option value="MEG">MEG</option>
+        <option value="PET">PET</option>
+        <option value="fNIRS">fNIRS</option>
+        <option value="Ultrasound">Ultrasound</option>
+        <option value="Other">Other</option>
+      </select>
+      <p class="field-note hidden" id="mri-note">MRI tools are managed at <a href="https://openmritools.com/contribute/" target="_blank" rel="noopener noreferrer">openmritools.com</a> — suggest it there.</p>
+    </div>
 
+    <div id="form-fields">
       <div class="field">
         <label>Tool name</label>
         <input type="text" name="tool_name" required placeholder="e.g. MNE-Python">
@@ -50,16 +51,45 @@ permalink: /contribute/
       </div>
 
       <div class="field">
-        <label>Description <span style="font-weight:400;text-transform:none;letter-spacing:0">(one sentence)</span></label>
+        <label>Description <span class="optional">(one sentence)</span></label>
         <textarea name="description" rows="2" placeholder="What does it do?"></textarea>
       </div>
 
       <div class="field">
-        <label>Your name or contact <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <label>Your name or contact <span class="optional">(optional)</span></label>
         <input type="text" name="contact" placeholder="Optional">
       </div>
 
       <button class="submit-btn" type="submit">Submit</button>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
+
+<footer class="footer">
+  <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
+</footer>
+
+<script>
+  const select = document.getElementById('modality-select');
+  const mriNote = document.getElementById('mri-note');
+  const formFields = document.getElementById('form-fields');
+
+  // Pre-select modality from URL param
+  const params = new URLSearchParams(window.location.search);
+  const mod = params.get('modality');
+  if (mod) {
+    for (const opt of select.options) {
+      if (opt.value === mod) { opt.selected = true; break; }
+    }
+  }
+
+  select.addEventListener('change', () => {
+    if (select.value === 'MRI') {
+      mriNote.classList.remove('hidden');
+      formFields.classList.add('hidden');
+    } else {
+      mriNote.classList.add('hidden');
+      formFields.classList.remove('hidden');
+    }
+  });
+</script>

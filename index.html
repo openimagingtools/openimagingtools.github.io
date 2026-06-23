@@ -16,46 +16,79 @@ title: Open Imaging Tools
   </div>
 </header>
 
-<div class="modality-grid">
-
-  <a class="modality-card" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">
-    <span class="modality-card-name">MRI</span>
-    <span class="modality-card-desc">Structural, functional, diffusion, and quantitative MRI analysis.</span>
-    <span class="modality-card-count external">178+ tools → openmritools.com</span>
-  </a>
-
-  <a class="modality-card" href="{{ '/eeg/' | relative_url }}">
-    <span class="modality-card-name">EEG</span>
-    <span class="modality-card-desc">Electroencephalography — scalp electrical recordings of brain activity.</span>
-    <span class="modality-card-count">Accepting contributions</span>
-  </a>
-
-  <a class="modality-card" href="{{ '/meg/' | relative_url }}">
-    <span class="modality-card-name">MEG</span>
-    <span class="modality-card-desc">Magnetoencephalography — magnetic field recordings from neural currents.</span>
-    <span class="modality-card-count">Accepting contributions</span>
-  </a>
-
-  <a class="modality-card" href="{{ '/pet/' | relative_url }}">
-    <span class="modality-card-name">PET</span>
-    <span class="modality-card-desc">Positron emission tomography — tracer-based metabolic and receptor imaging.</span>
-    <span class="modality-card-count">Accepting contributions</span>
-  </a>
-
-  <a class="modality-card" href="{{ '/nirs/' | relative_url }}">
-    <span class="modality-card-name">fNIRS</span>
-    <span class="modality-card-desc">Functional near-infrared spectroscopy — optical hemodynamic imaging.</span>
-    <span class="modality-card-count">Accepting contributions</span>
-  </a>
-
-  <a class="modality-card placeholder">
-    <span class="modality-card-name">Ultrasound</span>
-    <span class="modality-card-desc">Functional and structural ultrasound neuroimaging.</span>
-    <span class="modality-card-count">Coming soon</span>
-  </a>
-
+<div class="controls">
+  <div class="pills">
+    <div class="pill-group">
+      <a class="pill selected" href="{{ '/' | relative_url }}">All</a>
+      <a class="pill" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI</a>
+      <a class="pill" href="{{ '/eeg/' | relative_url }}">EEG</a>
+      <a class="pill" href="{{ '/meg/' | relative_url }}">MEG</a>
+      <a class="pill" href="{{ '/pet/' | relative_url }}">PET</a>
+      <a class="pill" href="{{ '/nirs/' | relative_url }}">fNIRS</a>
+      <a class="pill disabled">Ultrasound</a>
+    </div>
+  </div>
 </div>
 
-<footer class="footer" style="margin-top: 64px;">
+<div class="meta">
+  <div class="meta-left">
+    <span>6 modalities</span>
+    <span class="meta-sep">·</span>
+    <span>MRI: 178+ tools at <a class="meta-link" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">openmritools.com</a></span>
+    <span class="meta-sep">·</span>
+    <span>Other modalities: accepting contributions</span>
+  </div>
+</div>
+
+<table class="tool-table">
+  <thead>
+    <tr>
+      <th>Modality</th>
+      <th>Description</th>
+      <th>Tools</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tool-name"><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI</a></td>
+      <td class="tool-desc">Structural, functional, diffusion, and quantitative MRI analysis.</td>
+      <td class="tool-count active-link"><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">178+ →</a></td>
+      <td class="tool-status">openmritools.com</td>
+    </tr>
+    <tr>
+      <td class="tool-name"><a href="{{ '/eeg/' | relative_url }}">EEG</a></td>
+      <td class="tool-desc">Scalp electrical recordings of brain activity.</td>
+      <td class="tool-count">—</td>
+      <td class="tool-status">Accepting contributions</td>
+    </tr>
+    <tr>
+      <td class="tool-name"><a href="{{ '/meg/' | relative_url }}">MEG</a></td>
+      <td class="tool-desc">Magnetic field recordings from neural currents.</td>
+      <td class="tool-count">—</td>
+      <td class="tool-status">Accepting contributions</td>
+    </tr>
+    <tr>
+      <td class="tool-name"><a href="{{ '/pet/' | relative_url }}">PET</a></td>
+      <td class="tool-desc">Tracer-based metabolic and receptor imaging.</td>
+      <td class="tool-count">—</td>
+      <td class="tool-status">Accepting contributions</td>
+    </tr>
+    <tr>
+      <td class="tool-name"><a href="{{ '/nirs/' | relative_url }}">fNIRS</a></td>
+      <td class="tool-desc">Optical hemodynamic imaging.</td>
+      <td class="tool-count">—</td>
+      <td class="tool-status">Accepting contributions</td>
+    </tr>
+    <tr class="inactive">
+      <td class="tool-name">Ultrasound</td>
+      <td class="tool-desc">Functional and structural ultrasound neuroimaging.</td>
+      <td class="tool-count">—</td>
+      <td class="tool-status">Coming soon</td>
+    </tr>
+  </tbody>
+</table>
+
+<footer class="footer">
   <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
 </footer>

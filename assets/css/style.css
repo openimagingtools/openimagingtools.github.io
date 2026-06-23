@@ -35,6 +35,11 @@ body {
   align-items: baseline;
 }
 
+.site-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
 .site-nav {
   display: flex;
   gap: 16px;
@@ -84,82 +89,76 @@ body {
   text-underline-offset: 2px;
 }
 
-/* ── Landing page modality grid ── */
+/* ── Controls ── */
 
-.modality-grid {
-  margin-top: 64px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--hairline);
-  border: 1px solid var(--hairline);
-}
-
-.modality-card {
-  background: #ffffff;
-  padding: 28px 24px;
-  text-decoration: none;
-  color: var(--text);
+.controls {
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  transition: background 0.1s;
+  gap: 20px;
 }
 
-.modality-card:hover {
-  background: #f9f9f9;
+.pills {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.modality-card-name {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.1px;
+.pill-group {
+  display: flex;
+  gap: 4px;
 }
 
-.modality-card-desc {
+.pill {
+  padding: 3px 10px;
   font-size: 12px;
-  color: var(--muted);
-  line-height: 1.5;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  background: none;
+  color: var(--text);
+  user-select: none;
+  transition: border-color 0.1s;
+  text-decoration: none;
+  display: inline-block;
 }
 
-.modality-card-count {
-  margin-top: 12px;
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.04em;
+.pill:hover:not(.selected) {
+  border-color: #aaaaaa;
 }
 
-.modality-card-count.external {
-  color: var(--dot-active);
+.pill.selected {
+  background: var(--pill-active-bg);
+  color: var(--pill-active-text);
+  border-color: var(--pill-active-bg);
 }
 
-.modality-card.placeholder {
-  opacity: 0.5;
+.pill.disabled {
+  opacity: 0.4;
   cursor: default;
   pointer-events: none;
 }
 
-/* ── Modality page ── */
+/* ── Meta bar ── */
 
-.modality-wrap {
-  max-width: 560px;
-  margin: 0 auto;
-}
-
-.empty-notice {
-  margin-top: 40px;
-  padding: 24px;
-  border: 1px solid var(--hairline);
-  border-radius: 2px;
-  font-size: 13px;
+.meta {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
   color: var(--muted);
-  line-height: 1.7;
 }
 
-.empty-notice a {
-  color: var(--text);
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.meta-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meta-sep {
+  color: var(--hairline);
 }
 
 /* ── Table ── */
@@ -191,12 +190,21 @@ body {
 .section-header td {
   padding-top: 28px;
   padding-bottom: 6px;
+  padding-right: 0;
   border-bottom: 1px solid var(--text);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
+}
+
+.section-header:first-child td {
+  padding-top: 12px;
+}
+
+.tool-table tr.inactive td {
+  opacity: 0.4;
 }
 
 .tool-name a {
@@ -211,33 +219,38 @@ body {
 }
 
 .tool-desc,
-.tool-lang,
-.tool-stars {
+.tool-count,
+.tool-status {
   color: var(--muted);
 }
 
-.dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+.tool-count.active-link {
+  color: var(--dot-active);
+  font-weight: 500;
 }
 
-.dot-active    { background: var(--dot-active); }
-.dot-quiet     { background: var(--dot-quiet); }
-.dot-inactive  { background: var(--dot-inactive); }
-.dot-external  { background: var(--dot-external); }
-.dot-unknown   { background: transparent; border: 1.5px solid var(--dot-inactive); }
+.tool-count.active-link a {
+  color: var(--dot-active);
+  text-decoration: none;
+}
+
+.tool-count.active-link a:hover {
+  text-decoration: underline;
+}
+
+.empty-row td {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
 
 /* ── About / Contribute ── */
 
-.about-wrap {
-  max-width: 560px;
-  margin: 0 auto;
-}
-
 .about-body {
   margin-top: 12px;
+  max-width: 560px;
 }
 
 .about-body p {
@@ -253,7 +266,7 @@ body {
   text-underline-offset: 2px;
 }
 
-/* ── Contribute form ── */
+/* ── Suggest form ── */
 
 .suggest-form {
   margin-top: 36px;
@@ -277,6 +290,12 @@ body {
   color: var(--muted);
 }
 
+.optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .field input,
 .field textarea,
 .field select {
@@ -295,6 +314,22 @@ body {
 .field textarea:focus,
 .field select:focus {
   border-color: #aaaaaa;
+}
+
+.field-note {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.field-note a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.field-note.hidden {
+  display: none;
 }
 
 .submit-btn {
@@ -349,14 +384,88 @@ body {
   }
 
   .site-nav {
-    justify-content: center;
     gap: 10px;
+    flex-wrap: wrap;
+    row-gap: 6px;
+    justify-content: center;
+  }
+
+  .controls {
+    margin-top: 44px;
+    gap: 14px;
+  }
+
+  .pills {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pill-group {
+    justify-content: center;
     flex-wrap: wrap;
   }
 
-  .modality-grid {
-    grid-template-columns: 1fr;
-    margin-top: 40px;
+  .pill {
+    padding: 6px 12px;
+  }
+
+  .meta {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  /* Stacked table on mobile */
+  .tool-table thead {
+    display: none;
+  }
+
+  .tool-table,
+  .tool-table tbody {
+    display: block;
+  }
+
+  .tool-table tr.section-header {
+    display: block;
+  }
+
+  .tool-table tr.section-header td {
+    display: block;
+    padding-top: 28px;
+    padding-bottom: 6px;
+    padding-right: 0;
+    border-bottom: 1px solid var(--text);
+  }
+
+  .tool-table tr:not(.section-header) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .tool-table tr:not(.section-header) td {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  .tool-name {
+    flex: 1;
+    min-width: 0;
+    font-weight: 500;
+  }
+
+  .tool-desc {
+    width: 100%;
+    margin-top: 3px;
+    font-size: 12px;
+  }
+
+  .tool-count,
+  .tool-status {
+    display: none;
   }
 }
 
@@ -373,14 +482,6 @@ body {
 
   body {
     background: #111111;
-  }
-
-  .modality-card {
-    background: #111111;
-  }
-
-  .modality-card:hover {
-    background: #1a1a1a;
   }
 
   .field input,
