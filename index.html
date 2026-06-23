@@ -28,19 +28,20 @@ title: Open Imaging Tools
       <a class="pill disabled">Ultrasound</a>
     </div>
   </div>
+  <input class="search" id="search" type="search" placeholder="Search modalities…" autocomplete="off" spellcheck="false">
 </div>
 
 <div class="meta">
   <div class="meta-left">
-    <span>6 modalities</span>
+    <span id="count">6 modalities</span>
     <span class="meta-sep">·</span>
-    <span>MRI: 178+ tools at <a class="meta-link" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">openmritools.com</a></span>
+    <span>Updated weekly via GitHub API</span>
     <span class="meta-sep">·</span>
-    <span>Other modalities: accepting contributions</span>
+    <a class="meta-link" href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">Contribute on GitHub</a>
   </div>
 </div>
 
-<table class="tool-table">
+<table class="tool-table" id="modality-table">
   <thead>
     <tr>
       <th>Modality</th>
@@ -50,37 +51,37 @@ title: Open Imaging Tools
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr data-name="mri">
       <td class="tool-name"><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI</a></td>
       <td class="tool-desc">Structural, functional, diffusion, and quantitative MRI analysis.</td>
       <td class="tool-count active-link"><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">178+ →</a></td>
       <td class="tool-status">openmritools.com</td>
     </tr>
-    <tr>
+    <tr data-name="eeg electroencephalography">
       <td class="tool-name"><a href="{{ '/eeg/' | relative_url }}">EEG</a></td>
       <td class="tool-desc">Scalp electrical recordings of brain activity.</td>
       <td class="tool-count">—</td>
       <td class="tool-status">Accepting contributions</td>
     </tr>
-    <tr>
+    <tr data-name="meg magnetoencephalography">
       <td class="tool-name"><a href="{{ '/meg/' | relative_url }}">MEG</a></td>
       <td class="tool-desc">Magnetic field recordings from neural currents.</td>
       <td class="tool-count">—</td>
       <td class="tool-status">Accepting contributions</td>
     </tr>
-    <tr>
+    <tr data-name="pet positron emission tomography">
       <td class="tool-name"><a href="{{ '/pet/' | relative_url }}">PET</a></td>
       <td class="tool-desc">Tracer-based metabolic and receptor imaging.</td>
       <td class="tool-count">—</td>
       <td class="tool-status">Accepting contributions</td>
     </tr>
-    <tr>
+    <tr data-name="fnirs nirs near-infrared spectroscopy optical">
       <td class="tool-name"><a href="{{ '/nirs/' | relative_url }}">fNIRS</a></td>
       <td class="tool-desc">Optical hemodynamic imaging.</td>
       <td class="tool-count">—</td>
       <td class="tool-status">Accepting contributions</td>
     </tr>
-    <tr class="inactive">
+    <tr class="inactive" data-name="ultrasound functional ultrasound">
       <td class="tool-name">Ultrasound</td>
       <td class="tool-desc">Functional and structural ultrasound neuroimaging.</td>
       <td class="tool-count">—</td>
@@ -92,3 +93,26 @@ title: Open Imaging Tools
 <footer class="footer">
   <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
 </footer>
+
+<script>
+  const search = document.getElementById('search');
+  const rows = document.querySelectorAll('#modality-table tbody tr');
+  const countEl = document.getElementById('count');
+
+  search.addEventListener('input', () => {
+    const q = search.value.toLowerCase().trim();
+    let visible = 0;
+    rows.forEach(row => {
+      const name = (row.dataset.name || '').toLowerCase();
+      const desc = (row.querySelector('.tool-desc') || {}).textContent.toLowerCase();
+      const match = !q || name.includes(q) || desc.includes(q);
+      row.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    countEl.textContent = q ? `${visible} modalit${visible === 1 ? 'y' : 'ies'}` : '6 modalities';
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search.focus(); }
+  });
+</script>
