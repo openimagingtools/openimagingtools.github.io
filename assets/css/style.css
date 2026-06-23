@@ -98,6 +98,12 @@ body {
   flex-wrap: wrap;
 }
 
+a.pill {
+  text-decoration: none;
+  display: inline-block;
+  line-height: 1.6;
+}
+
 .pills {
   display: flex;
   justify-content: space-between;
@@ -122,11 +128,6 @@ body {
   transition: border-color 0.1s;
 }
 
-a.pill {
-  text-decoration: none;
-  display: inline-block;
-  line-height: 1.6;
-}
 
 .pill:hover:not(.selected) {
   border-color: #aaaaaa;
@@ -164,8 +165,29 @@ a.pill {
 
 /* ── About page ── */
 
+.about-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
 .about-body {
   margin-top: 12px;
+}
+
+.health-legend {
+  list-style: none;
+  margin: 16px 0 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.health-legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text);
 }
 
 .about-body p {
@@ -304,6 +326,7 @@ a.pill {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
 
 .col-date {
   display: none;
@@ -461,6 +484,36 @@ a.pill {
   letter-spacing: 0;
 }
 
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tool-hint {
+  margin-top: 5px;
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 1em;
+}
+
+.tool-hint a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -607,6 +660,7 @@ a.pill {
     gap: 6px;
   }
 
+  /* Hide filter status tags */
   #lang-tag,
   #modality-tag {
     display: none !important;

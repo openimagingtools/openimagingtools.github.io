@@ -19,6 +19,9 @@
 - id: connectivity
   name: Connectivity
 
+- id: diffusion_analysis
+  name: Diffusion Analysis
+
 - id: visualization
   name: Visualization
 

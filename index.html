@@ -1,7 +1,6 @@
 ---
 layout: default
 title: Open Imaging Tools
-description: A community directory of open-source software across neuroimaging modalities.
 ---
 
 <header>
@@ -11,7 +10,8 @@ description: A community directory of open-source software across neuroimaging m
       <p class="site-subtitle">Open-source software across neuroimaging modalities.</p>
     </div>
     <nav class="site-nav">
-      <a href="{{ '/contribute/' | relative_url }}">Suggest a tool</a>
+      <a href="{{ '/contribute/' | relative_url }}">Suggest a tool or edit</a>
+      <a href="https://github.com/openimagingtools/openimagingtools.github.io/issues?q=is%3Aissue+label%3Asuggestion%2Cedit" target="_blank" rel="noopener noreferrer">Pending suggestions</a>
       <a href="{{ '/about/' | relative_url }}">About</a>
     </nav>
   </div>
@@ -19,7 +19,7 @@ description: A community directory of open-source software across neuroimaging m
 
 <div class="controls">
   <div class="modality-pills" id="modality-pills">
-    <a class="pill modality-link" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI ↗</a>
+    <a class="pill" href="https://openmritools.com" target="_blank" rel="noopener noreferrer">MRI ↗</a>
     <button class="pill" data-modality="EEG">EEG</button>
     <button class="pill" data-modality="MEG">MEG</button>
     <button class="pill" data-modality="PET">PET</button>
@@ -201,6 +201,7 @@ description: A community directory of open-source software across neuroimaging m
 
   const toolTable = document.querySelector('.tool-table');
 
+  // Pre-populate date cells once on load
   document.querySelectorAll('.col-date[data-date]').forEach(cell => {
     const d = new Date(cell.dataset.date);
     if (!isNaN(d)) {
@@ -208,6 +209,7 @@ description: A community directory of open-source software across neuroimaging m
     }
   });
 
+  // Pre-populate star counts
   document.querySelectorAll('.tool-stars[data-stars]').forEach(cell => {
     const n = parseInt(cell.dataset.stars);
     if (!isNaN(n) && n > 0) {
@@ -220,31 +222,31 @@ description: A community directory of open-source software across neuroimaging m
     {% endfor %}
   };
 
-  const mainPills        = document.querySelectorAll('#pills .pill');
-  const subPillsEl       = document.getElementById('sub-pills');
-  const search           = document.getElementById('search');
-  const tbody            = document.getElementById('tool-list');
-  const toolRows         = document.querySelectorAll('#tool-list tr:not(.section-header)');
-  const headers          = document.querySelectorAll('#tool-list tr.section-header');
-  const originalOrder    = [...tbody.children];
-  const countEl          = document.getElementById('tool-count');
-  const langTagEl        = document.getElementById('lang-tag');
-  const langTagName      = document.getElementById('lang-tag-name');
-  const langClearEl      = document.getElementById('lang-clear');
-  const langHeaderBtn    = document.getElementById('lang-header-btn');
-  const langHeaderLabel  = document.getElementById('lang-header-label');
-  const langDropdown     = document.getElementById('lang-dropdown');
-  const langOptions      = langDropdown.querySelectorAll('.lang-option');
+  const mainPills      = document.querySelectorAll('#pills .pill');
+  const subPillsEl     = document.getElementById('sub-pills');
+  const search         = document.getElementById('search');
+  const tbody          = document.getElementById('tool-list');
+  const toolRows       = document.querySelectorAll('#tool-list tr:not(.section-header)');
+  const headers        = document.querySelectorAll('#tool-list tr.section-header');
+  const originalOrder  = [...tbody.children];
+  const countEl        = document.getElementById('tool-count');
+  const langTagEl         = document.getElementById('lang-tag');
+  const langTagName       = document.getElementById('lang-tag-name');
+  const langClearEl       = document.getElementById('lang-clear');
+  const langHeaderBtn     = document.getElementById('lang-header-btn');
+  const langHeaderLabel   = document.getElementById('lang-header-label');
+  const langDropdown      = document.getElementById('lang-dropdown');
+  const langOptions       = langDropdown.querySelectorAll('.lang-option');
 
-  const modalityTagEl       = document.getElementById('modality-tag');
-  const modalityTagName     = document.getElementById('modality-tag-name');
-  const modalityClearEl     = document.getElementById('modality-clear');
-  const modalityHeaderBtn   = document.getElementById('modality-header-btn');
+  const modalityTagEl     = document.getElementById('modality-tag');
+  const modalityTagName   = document.getElementById('modality-tag-name');
+  const modalityClearEl   = document.getElementById('modality-clear');
+  const modalityHeaderBtn = document.getElementById('modality-header-btn');
   const modalityHeaderLabel = document.getElementById('modality-header-label');
-  const modalityDropdown    = document.getElementById('modality-dropdown');
-  const modalityOptions     = modalityDropdown.querySelectorAll('.modality-option');
-  const mobileModalityBtns  = document.querySelectorAll('#mobile-modality .pill');
-  const imgModalityBtns     = document.querySelectorAll('#modality-pills button');
+  const modalityDropdown  = document.getElementById('modality-dropdown');
+  const modalityOptions   = modalityDropdown.querySelectorAll('.modality-option');
+  const mobileModalityBtns = document.querySelectorAll('#mobile-modality .pill');
+  const imgModalityBtns   = document.querySelectorAll('#modality-pills button');
 
   const modalityLabels = { EEG: 'EEG', MEG: 'MEG', PET: 'PET', fNIRS: 'fNIRS', Ultrasound: 'Ultrasound' };
 
@@ -252,12 +254,12 @@ description: A community directory of open-source software across neuroimaging m
   let activeSubFilter = null;
   let activeLang      = null;
   let activeModality  = null;
-  let starsSortDir    = null;
+  let starsSortDir = null; // null | 'desc' | 'asc'
 
-  const starsHeaderBtn = document.getElementById('stars-header-btn');
-  const starsSortIcon  = document.getElementById('stars-sort-icon');
-  const starsDropdown  = document.getElementById('stars-dropdown');
-  const starsOptions   = starsDropdown.querySelectorAll('.stars-option');
+  const starsHeaderBtn   = document.getElementById('stars-header-btn');
+  const starsSortIcon    = document.getElementById('stars-sort-icon');
+  const starsDropdown    = document.getElementById('stars-dropdown');
+  const starsOptions     = starsDropdown.querySelectorAll('.stars-option');
 
   function setStarsSort(dir) {
     starsSortDir = dir || null;
@@ -378,6 +380,7 @@ description: A community directory of open-source software across neuroimaging m
         .slice(0, 25);
       top10 = new Set(sorted);
 
+      // Reorder DOM: place section header then tools in date-descending order
       const seenCats = new Set();
       for (const row of sorted) {
         const cat = row.dataset.category;
@@ -389,6 +392,7 @@ description: A community directory of open-source software across neuroimaging m
         tbody.appendChild(row);
       }
     } else {
+      // Restore default order: categories in original order, non-GitHub tools first within each category
       for (const el of originalOrder) {
         if (el.classList.contains('section-header')) {
           const cat = el.dataset.category;
@@ -489,6 +493,7 @@ description: A community directory of open-source software across neuroimaging m
   imgModalityBtns.forEach(btn => btn.addEventListener('click', () => setModality(btn.dataset.modality)));
   search.addEventListener('input', applyFilters);
 
+  // Load state from URL on page load
   (function() {
     const p = new URLSearchParams(window.location.search);
     const initFilter = p.get('filter');
@@ -514,6 +519,7 @@ description: A community directory of open-source software across neuroimaging m
     if (p.toString()) applyFilters();
   })();
 
+  // / to focus search
   document.addEventListener('keydown', e => {
     if (e.key === '/' && document.activeElement !== search) { e.preventDefault(); search.focus(); }
   });

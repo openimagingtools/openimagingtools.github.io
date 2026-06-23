@@ -1,17 +1,18 @@
 ---
 layout: default
-title: About — Open Imaging Tools
+title: About
 permalink: /about/
 ---
 
 <header>
   <div class="site-header-row">
     <div class="site-header-left">
-      <a href="{{ '/' | relative_url }}" class="back-link">← Open Imaging Tools</a>
+      <a href="{{ '/' | relative_url }}" class="back-link">← Directory</a>
       <h1 class="site-title">About Open Imaging Tools</h1>
     </div>
     <nav class="site-nav">
       <a href="{{ '/contribute/' | relative_url }}">Suggest a tool</a>
+      <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
     </nav>
   </div>
 </header>
@@ -21,11 +22,17 @@ permalink: /about/
 
   <p><a href="https://openmritools.com" target="_blank" rel="noopener noreferrer">openmritools.com</a> covers MRI. This is the same idea for everything else. Same structure, same health checks, same contribution form. MRI links out to openmritools.com. EEG, MEG, PET, fNIRS, and Ultrasound live here.</p>
 
-  <p>Every section is open to contributions. If it's empty, it's waiting for someone to add the first tool. Use the form at <a href="{{ '/contribute/' | relative_url }}">/contribute</a> — your submission becomes a public GitHub Issue automatically. You can also open an issue or PR directly on <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+  <p><strong>How health status works.</strong> A weekly GitHub Actions cron job checks each tool's repository.</p>
+  <ul class="health-legend">
+    <li><span class="dot dot-active"></span> Active — committed within 6 months</li>
+    <li><span class="dot dot-quiet"></span> Quiet — 6 to 24 months</li>
+    <li><span class="dot dot-inactive"></span> Inactive — 2+ years or archived</li>
+    <li><span class="dot dot-external"></span> Not on GitHub</li>
+  </ul>
+
+  <p><strong>What gets included.</strong> Tools need to be relevant to their modality, open-source, and actively maintained. New or low-star tools are welcome as long as they solve a real problem and are being worked on.</p>
+
+  <p><strong>How to contribute.</strong> Every section is open to contributions. If it's empty, it's waiting for someone to add the first tool. Use the form at <a href="{{ '/contribute/' | relative_url }}">/contribute</a> — your submission becomes a public GitHub Issue automatically. You can also open an issue or PR directly on <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
 
   <p>Started by Henrik Formoe (University of Oslo). Open to everyone.</p>
 </div>
-
-<footer class="footer">
-  <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
-</footer>

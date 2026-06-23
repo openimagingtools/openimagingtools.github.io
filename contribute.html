@@ -1,76 +1,87 @@
 ---
 layout: default
-title: Suggest a Tool — Open Imaging Tools
+title: Suggest a tool or an edit
 permalink: /contribute/
 ---
 
 <header>
-  <div class="site-header-row">
-    <div class="site-header-left">
-      <a href="{{ '/' | relative_url }}" class="back-link">← Open Imaging Tools</a>
-      <h1 class="site-title">Suggest a tool</h1>
-    </div>
-    <nav class="site-nav">
-      <a href="{{ '/about/' | relative_url }}">About</a>
-    </nav>
-  </div>
+  <h1 class="site-title">Suggest a tool or an edit</h1>
+  <p class="site-subtitle">Know something that should be listed, or spot something wrong? Tell us.</p>
 </header>
 
-<div class="about-body">
-  <p>Submissions become a public GitHub Issue and are reviewed before being added. Takes about 30 seconds.</p>
-
-  <form class="suggest-form" action="https://formsubmit.co/henrikformoe@gmail.com" method="POST">
-    <input type="hidden" name="_subject" value="[openimagingtools] New tool suggestion">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_template" value="table">
-
-    <div class="field">
-      <label>Modality</label>
-      <select name="modality" id="modality-select" required>
-        <option value="" disabled selected>Select modality</option>
-        <option value="MRI">MRI</option>
-        <option value="EEG">EEG</option>
-        <option value="MEG">MEG</option>
-        <option value="PET">PET</option>
-        <option value="fNIRS">fNIRS</option>
-        <option value="Ultrasound">Ultrasound</option>
-        <option value="Other">Other</option>
-      </select>
-      <p class="field-note hidden" id="mri-note">MRI tools are managed at <a href="https://openmritools.com/contribute/" target="_blank" rel="noopener noreferrer">openmritools.com</a> — suggest it there.</p>
-    </div>
-
-    <div id="form-fields">
-      <div class="field">
-        <label>Tool name</label>
-        <input type="text" name="tool_name" required placeholder="e.g. MNE-Python">
-      </div>
-
-      <div class="field">
-        <label>URL</label>
-        <input type="url" name="url" required placeholder="https://github.com/...">
-      </div>
-
-      <div class="field">
-        <label>Description <span class="optional">(one sentence)</span></label>
-        <textarea name="description" rows="2" placeholder="What does it do?"></textarea>
-      </div>
-
-      <div class="field">
-        <label>Your name or contact <span class="optional">(optional)</span></label>
-        <input type="text" name="contact" placeholder="Optional">
-      </div>
-
-      <button class="submit-btn" type="submit">Submit</button>
-    </div>
-  </form>
+<div id="submitted-msg" style="display:none">
+  <p>Thanks — your suggestion is now <a href="https://github.com/openimagingtools/openimagingtools.github.io/issues?q=is%3Aissue+label%3Asuggestion%2Cedit" target="_blank" rel="noopener noreferrer">visible on GitHub</a>.</p>
 </div>
 
-<footer class="footer">
-  <a href="https://github.com/openimagingtools/openimagingtools.github.io" target="_blank" rel="noopener noreferrer">GitHub</a>
-</footer>
+<form id="suggest-form" class="suggest-form" action="https://formsubmit.co/henrikformoe@gmail.com" method="POST">
+  <input type="hidden" name="_subject" value="[openimagingtools] New tool suggestion">
+  <input type="hidden" name="_captcha" value="false">
+  <input type="hidden" name="_template" value="table">
+  <!-- Honeypot: hidden from real users, bots fill it in -->
+  <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+  <div class="field">
+    <label for="modality-select">Modality</label>
+    <select id="modality-select" name="modality" required>
+      <option value="" disabled selected>Select modality</option>
+      <option value="MRI">MRI</option>
+      <option value="EEG">EEG</option>
+      <option value="MEG">MEG</option>
+      <option value="PET">PET</option>
+      <option value="fNIRS">fNIRS</option>
+      <option value="Ultrasound">Ultrasound</option>
+      <option value="Other">Other</option>
+    </select>
+    <p class="field-note hidden" id="mri-note">MRI tools are managed at <a href="https://openmritools.com/contribute/" target="_blank" rel="noopener noreferrer">openmritools.com/contribute</a> — suggest it there.</p>
+  </div>
+
+  <div id="form-fields">
+    <div class="field">
+      <div class="radio-group">
+        <label class="radio-label">
+          <input type="radio" name="type" value="suggest" checked>
+          Suggest a tool
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="type" value="flag">
+          Flag an edit
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="tool-name">Tool name</label>
+      <input id="tool-name" type="text" name="tool_name" required autocomplete="off">
+      <div id="tool-hint" class="tool-hint"></div>
+    </div>
+
+    <div class="field">
+      <label for="tool-url">URL</label>
+      <input id="tool-url" type="text" name="tool_url" placeholder="URL" required autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label id="desc-label" for="tool-desc">What does it do?</label>
+      <textarea id="tool-desc" name="description" rows="4" placeholder="One or two sentences. What it does, not why it matters."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="contact">Your email or GitHub username <span class="optional">(optional)</span></label>
+      <input id="contact" type="text" name="contact" autocomplete="off">
+    </div>
+
+    <button type="submit" class="submit-btn">Submit</button>
+    <p class="tool-hint">All suggestions are tracked publicly — <a href="https://github.com/openimagingtools/openimagingtools.github.io/issues?q=is%3Aissue+label%3Asuggestion%2Cedit" target="_blank" rel="noopener noreferrer">see pending suggestions on GitHub</a>.</p>
+  </div>
+</form>
 
 <script>
-  const select = document.getElementById('modality-select');
+  if (new URLSearchParams(window.location.search).get('submitted') === 'true') {
+    document.getElementById('submitted-msg').style.display = '';
+    document.getElementById('suggest-form').style.display = 'none';
+  }
+
+  const modalitySelect = document.getElementById('modality-select');
   const mriNote = document.getElementById('mri-note');
   const formFields = document.getElementById('form-fields');
 
@@ -78,13 +89,17 @@ permalink: /contribute/
   const params = new URLSearchParams(window.location.search);
   const mod = params.get('modality');
   if (mod) {
-    for (const opt of select.options) {
+    for (const opt of modalitySelect.options) {
       if (opt.value === mod) { opt.selected = true; break; }
+    }
+    if (mod === 'MRI') {
+      mriNote.classList.remove('hidden');
+      formFields.classList.add('hidden');
     }
   }
 
-  select.addEventListener('change', () => {
-    if (select.value === 'MRI') {
+  modalitySelect.addEventListener('change', () => {
+    if (modalitySelect.value === 'MRI') {
       mriNote.classList.remove('hidden');
       formFields.classList.add('hidden');
     } else {
@@ -92,4 +107,48 @@ permalink: /contribute/
       formFields.classList.remove('hidden');
     }
   });
+
+  const existingTools = [
+    {% for cat in site.data.categories %}
+    {% assign cat_tools = site.data.tools[cat.id] %}
+    {% for tool in cat_tools %}
+    { name: {{ tool.name | jsonify }}, url: {{ tool.url | jsonify }} },
+    {% endfor %}
+    {% endfor %}
+  ];
+
+  const descCopy = {
+    suggest: { label: 'What does it do?', placeholder: 'One or two sentences. What it does, not why it matters.' },
+    flag:    { label: 'What needs fixing?', placeholder: 'Which tool, and what\'s wrong.' }
+  };
+  const descLabel = document.getElementById('desc-label');
+  const descArea  = document.getElementById('tool-desc');
+  const urlInput  = document.getElementById('tool-url');
+  document.querySelectorAll('input[name="type"]').forEach(r => {
+    r.addEventListener('change', () => {
+      const isFlag = r.value === 'flag';
+      descLabel.textContent    = descCopy[r.value].label;
+      descArea.placeholder     = descCopy[r.value].placeholder;
+      urlInput.required    = !isFlag;
+      urlInput.placeholder = isFlag ? 'Optional — include if relevant.' : 'URL';
+    });
+  });
+
+  const nameInput = document.getElementById('tool-name');
+  const hint = document.getElementById('tool-hint');
+
+  nameInput.addEventListener('input', () => {
+    const q = nameInput.value.trim().toLowerCase();
+    if (q.length < 2) { hint.innerHTML = ''; return; }
+    const match = existingTools.find(t => t.name.toLowerCase().includes(q));
+    if (match) {
+      hint.innerHTML = 'ℹ️ <strong>' + match.name + '</strong> is already listed — <a href="{{ '/' | relative_url }}">see it in the directory</a>.';
+    } else {
+      hint.innerHTML = '';
+    }
+  });
 </script>
+
+<footer class="footer">
+  <a href="{{ '/' | relative_url }}">← Back to directory</a>
+</footer>

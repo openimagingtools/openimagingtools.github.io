@@ -1,5 +1,5 @@
 title: Open Imaging Tools
-description: A community directory of open-source neuroimaging software across all modalities.
+description: A community directory of open-source software across neuroimaging modalities.
 baseurl: ""
 url: "https://openimagingtools.com"
 
@@ -7,5 +7,6 @@ plugins:
   - jekyll-sitemap
 
 exclude:
+  - scripts/
   - Gemfile
   - Gemfile.lock
