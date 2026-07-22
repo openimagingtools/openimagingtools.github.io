@@ -41,9 +41,8 @@ HEADERS = {
 # Ultrasound). MRI-specific topics are excluded; MRI lives on openmritools.com.
 TOPICS = [
     "eeg",
-    "meg",
     "electroencephalography",
-    "magnetoencephalography",
+    "magnetoencephalography",  # bare "meg" is ambiguous (matches non-neuro repos)
     "fnirs",
     "pet-imaging",
     "electrophysiology",
