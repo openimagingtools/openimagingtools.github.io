@@ -1,0 +1,8 @@
+# Dismiss-list for scripts/discover_tools.py
+#
+# Repos listed here will never appear in the weekly "Tool candidates" issue.
+# Use it for candidates you've reviewed and rejected, tools already on the site
+# under a non-GitHub homepage, or tools that belong on a sibling site.
+#
+# One "owner/repo" slug per line (case-insensitive). Add to this list when
+# triaging a weekly issue so the same items don't come back.
