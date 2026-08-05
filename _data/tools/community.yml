@@ -1,1 +1,7 @@
 # Fields: name, description, url, github, language, modality, date_added
+
+- name: NeuroAtlas
+  description: Web tool for exploring the relationships between brain anatomy, function, and measurement technologies across EEG, MEG, fMRI, ultrasound, TMS, and more.
+  url: https://atlas.neuro2.ai
+  date_added: 2026-08-05
+  modality: multi
